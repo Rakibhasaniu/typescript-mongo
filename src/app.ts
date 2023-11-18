@@ -13,6 +13,6 @@ const getController = (req: Request, res: Response) => {
   const a = 10;
   res.send(a);
 }
-app.get('/', getController);
+app.use('/api/v1/students',StudentRoutes);
 
 export default app;
