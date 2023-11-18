@@ -101,4 +101,4 @@ profileImg: {
 },
 isActive: ['active','noActive']
 }) 
-const Student = model<Student>('Student',studentSchema)
+ export const StudentModel = model<Student>('Student',studentSchema)
