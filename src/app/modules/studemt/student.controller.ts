@@ -3,10 +3,10 @@ import { StudentServicev } from "./student.service";
 
 const createStudent =  async (req: Request, res: Response)=>{
     try{
-        const student = req.body;
+        const {student : studentData} = req.body;
 
     //will call service function to send service data
-    const result = await StudentServicev.createStudentIntoDB(student);
+    const result = await StudentServicev.createStudentIntoDB(studentData);
 
     //send response
     res.status(200).json({
@@ -15,7 +15,7 @@ const createStudent =  async (req: Request, res: Response)=>{
         data:  result
     })
     } catch (err) {
-        console.log(err)
+        console.log(err);
     }
 }
 
