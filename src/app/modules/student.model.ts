@@ -10,6 +10,12 @@ const userNameSchema = new Schema<UserName>({
   firstName: {
     type: String,
     required: true,
+    trim: true,
+    maxlength: [20,'20 word er beshi dis na'],
+    minlength:[4,'4 tar kom dis na'],
+    validate: function(value){
+      console.log(value);
+    }
   },
   middleName: {
     type: String,
