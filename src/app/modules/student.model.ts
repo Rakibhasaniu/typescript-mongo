@@ -1,4 +1,6 @@
 import { Schema, model } from 'mongoose';
+import validator from 'validator';
+
 import {
   Guardian,
   LocalGuardian,
@@ -13,8 +15,12 @@ const userNameSchema = new Schema<UserName>({
     trim: true,
     maxlength: [20,'20 word er beshi dis na'],
     minlength:[4,'4 tar kom dis na'],
-    validate: function(value){
-      console.log(value);
+    validate: {
+      validator:function(value : string){
+        const firstName= value.charAt(0).toUpperCase() + value.slice(1);
+        return firstName === value;
+      },
+      message: '{VALUE} IS NOT IN CAPITALIZE FORMAT'
     }
   },
   middleName: {
@@ -23,6 +29,10 @@ const userNameSchema = new Schema<UserName>({
   lastName: {
     type: String,
     required: true,
+    validate: {
+      validator: (value : string) => validator.isAlpha(value),
+      message:'{VALUE} IS NOT VALID' 
+    }
   },
 });
 
