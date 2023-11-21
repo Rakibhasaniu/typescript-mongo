@@ -221,6 +221,10 @@ const studentSchema = new Schema<TStudent, StudentModel>({
     type: Boolean,
     default: false
   }
+},{
+  toJSON: {
+    virtuals: true,
+  },
 });
 //for custom instance method
 // const studentSchema = new Schema<TStudent>({
@@ -312,6 +316,15 @@ studentSchema.statics.isUserExists = async function(id : string){
 studentSchema.pre('find', function (next){
   this.find({isDeleted : {$ne: true}});
   next();
+})
+studentSchema.pre('find', function (next){
+  this.findOne({isDeleted : {$ne: true}});
+  next();
+})
+
+//mongoose virtual
+studentSchema.virtual('full-name').get(function(){
+  return this.name.firstName + this.name.middleName + this.name.lastName;
 })
 
 
