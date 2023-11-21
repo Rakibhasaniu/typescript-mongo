@@ -5,6 +5,7 @@ import {
   TGuardian,
   TLocalGuardian,
   TStudent,
+  TStudentModel,
   TUserName,
 } from './studemt/student.inyerfac';
 
@@ -207,5 +208,8 @@ const studentSchema = new Schema<TStudent>({
 //   },
 // });
 
-studentSchema.methods.isUserExists
-export const Student = model<TStudent>('Student', studentSchema);
+studentSchema.methods.isUserExists = async function( id : string){
+  const existingUser = await Student.findOne({id});
+  return existingUser;
+}
+export const Student = model<TStudent, TStudentModel>('Student', studentSchema);
