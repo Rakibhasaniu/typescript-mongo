@@ -2,13 +2,13 @@ import { Schema, model } from 'mongoose';
 import validator from 'validator';
 
 import {
-  Guardian,
-  LocalGuardian,
-  Student,
-  UserName,
+  TGuardian,
+  TLocalGuardian,
+  TStudent,
+  TUserName,
 } from './studemt/student.inyerfac';
 
-const userNameSchema = new Schema<UserName>({
+const userNameSchema = new Schema<TUserName>({
   firstName: {
     type: String,
     required: true,
@@ -36,7 +36,7 @@ const userNameSchema = new Schema<UserName>({
   },
 });
 
-const guardianSchema = new Schema<Guardian>({
+const guardianSchema = new Schema<TGuardian>({
   fatherName: {
     type: String,
     required: true,
@@ -63,7 +63,7 @@ const guardianSchema = new Schema<Guardian>({
   },
 });
 
-const localGuardianSChema = new Schema<LocalGuardian>({
+const localGuardianSChema = new Schema<TLocalGuardian>({
   name: {
     type: String,
     required: false,
@@ -82,7 +82,7 @@ const localGuardianSChema = new Schema<LocalGuardian>({
   },
 });
 
-const studentSchema = new Schema<Student>({
+const studentSchema = new Schema<TStudent>({
   id: { 
     type: String,
     required: true,
@@ -144,4 +144,68 @@ const studentSchema = new Schema<Student>({
     // required: true
   },
 });
-export const StudentModel = model<Student>('Student', studentSchema);
+// const studentSchema = new Schema<TStudent>({
+//   id: { 
+//     type: String,
+//     required: true,
+//     unique: true
+//    },
+//   name: {
+//     type: userNameSchema,
+//     required: [true,'First Name is Requred'],
+//   },
+//   gender:{
+//     type: String,
+//     enum: {
+//       values:  ['male', 'female','other'],
+//       message: 'uporer 3 tar moddhe 1 ta hbe'
+//     },
+//     required: true
+//   },
+//   dateOfBirth: {
+//     type: String,
+//   },
+//   email: {
+//     type: String,
+//     required: true,
+//     unique: true
+//   },
+//   contactNo: {
+//     type: String,
+//     required: true,
+//   },
+//   emergencyContactNo: {
+//     type: String,
+//     required: true,
+//   },
+//   bloodGroup: {
+//     type: String,
+//     enum: ['AB+', 'AB-', 'A+', 'A-', 'B+', 'B-', '0+', '0-'],
+    
+//   },
+//   presentAddress: {
+//     type: String,
+//     required: true,
+//   },
+//   permanentAddress: {
+//     type: String,
+//     required: true,
+//   },
+//   guardian: guardianSchema,
+//   localGuardian: {
+//     type: localGuardianSChema,
+//     required: true,
+//   },
+//   profileImg: {
+//     type: String,
+//   },
+//   isActive: {
+//     type: String,
+//     enum: ['active', 'noActive'],
+//     default:'active',
+//     // required: true
+//   },
+// });
+
+studentSchema.methods.isUserExists
+export const Student = model<TStudent>('Student', studentSchema);
