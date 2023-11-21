@@ -1,5 +1,6 @@
 import { Schema, model } from 'mongoose';
 import validator from 'validator';
+import bcrypt from 'bcrypt'
 
 import {
   StudentModel,
@@ -153,6 +154,13 @@ const studentSchema = new Schema<TStudent, StudentModel>({
     required: true,
     unique: true
    },
+  password: { 
+    type: String,
+    required: true,
+    unique: true,
+    maxlength: 30,
+    minlength: 5,
+   },
   name: {
     type: userNameSchema,
     required: [true,'First Name is Requred'],
@@ -272,6 +280,19 @@ const studentSchema = new Schema<TStudent, StudentModel>({
 //     // required: true
 //   },
 // });
+
+//pre save middleware : will work on create() and save() method
+studentSchema.pre('save', function() {
+  const user = this;
+  bcrypt.hash(user.password)
+})
+
+//post save middleware
+studentSchema.post('save', function(){
+  console.log(this,'post hook : we saved our data')
+})
+
+
 
 //creating custom static method
 studentSchema.statics.isUserExists = async function(id : string){
