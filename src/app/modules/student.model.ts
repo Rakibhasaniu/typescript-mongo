@@ -2,6 +2,7 @@ import { Schema, model } from 'mongoose';
 import validator from 'validator';
 
 import {
+  StudentModel,
   TGuardian,
   TLocalGuardian,
   TStudent,
@@ -82,8 +83,71 @@ const localGuardianSChema = new Schema<TLocalGuardian>({
     required: true,
   },
 });
-
-const studentSchema = new Schema<TStudent>({
+//normal
+// const studentSchema = new Schema<TStudent>({
+//   id: { 
+//     type: String,
+//     required: true,
+//     unique: true
+//    },
+//   name: {
+//     type: userNameSchema,
+//     required: [true,'First Name is Requred'],
+//   },
+//   gender:{
+//     type: String,
+//     enum: {
+//       values:  ['male', 'female','other'],
+//       message: 'uporer 3 tar moddhe 1 ta hbe'
+//     },
+//     required: true
+//   },
+//   dateOfBirth: {
+//     type: String,
+//   },
+//   email: {
+//     type: String,
+//     required: true,
+//     unique: true
+//   },
+//   contactNo: {
+//     type: String,
+//     required: true,
+//   },
+//   emergencyContactNo: {
+//     type: String,
+//     required: true,
+//   },
+//   bloodGroup: {
+//     type: String,
+//     enum: ['AB+', 'AB-', 'A+', 'A-', 'B+', 'B-', '0+', '0-'],
+    
+//   },
+//   presentAddress: {
+//     type: String,
+//     required: true,
+//   },
+//   permanentAddress: {
+//     type: String,
+//     required: true,
+//   },
+//   guardian: guardianSchema,
+//   localGuardian: {
+//     type: localGuardianSChema,
+//     required: true,
+//   },
+//   profileImg: {
+//     type: String,
+//   },
+//   isActive: {
+//     type: String,
+//     enum: ['active', 'noActive'],
+//     default:'active',
+//     // required: true
+//   },
+// });
+//for custom static method
+const studentSchema = new Schema<TStudent, StudentModel>({
   id: { 
     type: String,
     required: true,
@@ -145,6 +209,7 @@ const studentSchema = new Schema<TStudent>({
     // required: true
   },
 });
+//for custom instance method
 // const studentSchema = new Schema<TStudent>({
 //   id: { 
 //     type: String,
@@ -208,8 +273,16 @@ const studentSchema = new Schema<TStudent>({
 //   },
 // });
 
-studentSchema.methods.isUserExists = async function( id : string){
+//creating custom static method
+studentSchema.statics.isUserExists = async function(id : string){
   const existingUser = await Student.findOne({id});
   return existingUser;
 }
+
+//creating custom instance method
+// studentSchema.methods.isUserExists = async function( id : string){
+//   const existingUser = await Student.findOne({id});
+//   return existingUser;
+// }
+
 export const Student = model<TStudent, TStudentModel>('Student', studentSchema);
