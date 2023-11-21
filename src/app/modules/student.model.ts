@@ -1,6 +1,7 @@
 import { Schema, model } from 'mongoose';
 import validator from 'validator';
 import bcrypt from 'bcrypt'
+import config from '../config/index';
 
 import {
   StudentModel,
@@ -282,9 +283,10 @@ const studentSchema = new Schema<TStudent, StudentModel>({
 // });
 
 //pre save middleware : will work on create() and save() method
-studentSchema.pre('save', function() {
+studentSchema.pre('save', async function(next) {
   const user = this;
-  bcrypt.hash(user.password)
+  user.password = await bcrypt.hash(user.password,Number(config.bcrypt_salt_round))
+  next();
 })
 
 //post save middleware
