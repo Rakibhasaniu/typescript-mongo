@@ -217,6 +217,10 @@ const studentSchema = new Schema<TStudent, StudentModel>({
     default:'active',
     // required: true
   },
+  isDeleted : {
+    type: Boolean,
+    default: false
+  }
 });
 //for custom instance method
 // const studentSchema = new Schema<TStudent>({
@@ -290,8 +294,9 @@ studentSchema.pre('save', async function(next) {
 })
 
 //post save middleware
-studentSchema.post('save', function(){
-  console.log(this,'post hook : we saved our data')
+studentSchema.post('save', function(doc, next){
+  doc.password = '';
+  next(); 
 })
 
 
@@ -301,6 +306,14 @@ studentSchema.statics.isUserExists = async function(id : string){
   const existingUser = await Student.findOne({id});
   return existingUser;
 }
+
+
+//query middleware
+studentSchema.pre('find', function (next){
+  this.find({isDeleted : {$ne: true}});
+  next();
+})
+
 
 //creating custom instance method
 // studentSchema.methods.isUserExists = async function( id : string){
